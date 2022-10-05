@@ -1,0 +1,13 @@
+{
+    "apps": [
+      {
+        "name": "TODO With Auth(Staging)",
+        "script": "yarn start",
+        "interpreter": "none",
+        "args": "",
+        "instances": 1,
+        "out_file": "../null",
+        "error_file": "../null"
+      }
+    ]
+  }
