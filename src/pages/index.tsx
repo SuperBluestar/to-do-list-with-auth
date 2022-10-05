@@ -173,7 +173,7 @@ const Index: NextPageWithLayout = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {
-        loadingScreen ? <div className="w-full flex justify-center items-center"><Spinner1 /></div> : (
+        loadingScreen ? <div className="w-full flex justify-center items-center z-50"><Spinner1 /></div> : (
           <div className="flex items-center gap-4">
             {
               status === "loading" && (
@@ -268,7 +268,7 @@ const Index: NextPageWithLayout = () => {
                     isOpen={addItemModal}
                     requestClose={() => openAddItemModal(false)}
                     classes={{
-                      wrapperClassName: "z-50",
+                      wrapperClassName: "z-30",
                       portalWrapperClassName: "",
                       contentClassName: "add-item-modal p-10"
                     }}
