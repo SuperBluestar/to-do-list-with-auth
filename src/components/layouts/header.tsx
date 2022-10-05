@@ -9,7 +9,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 const Header = () => {
   const { data: session, status } = useSession();
-  console.log(session)
   const [signInModal, openSignInModal] = useState<boolean>(false);
   const [signUpModal, openSignUpModal] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
@@ -46,7 +45,7 @@ const Header = () => {
   }
   return (
     <>
-      <nav className="w-full h-28">
+      <nav className="w-full h-header">
         <div className="container mx-auto h-full px-4 md:px-20 flex justify-end gap-8 items-center border-b border-white border-opacity-5">
           {
             status === "unauthenticated" && (
