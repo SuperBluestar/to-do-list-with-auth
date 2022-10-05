@@ -1,11 +1,12 @@
 import { useState } from "react";
-import HyperModal from "react-hyper-modal";
+// import HyperModal from "react-hyper-modal";
 import { trpc } from "../../utils/trpc";
 import { Button } from "../atoms/buttons";
 import { LabelInput } from "../atoms/inputs";
 import { env } from "../../env/client.mjs";
 import { signInSchema, signUpSchema } from "../../server/common/validation/auth";
 import { signIn, signOut, useSession } from "next-auth/react";
+import ReactModal from "react-modal";
 
 const Header = () => {
   const { data: session, status } = useSession();
@@ -65,7 +66,7 @@ const Header = () => {
           }
         </div>
       </nav>
-      <HyperModal
+      {/* <HyperModal
         isOpen={signInModal}
         requestClose={() => openSignInModal(false)}
         classes={{
@@ -73,6 +74,12 @@ const Header = () => {
           portalWrapperClassName: "",
           contentClassName: "sign-modal p-10"
         }}
+      > */}
+      <ReactModal
+        isOpen={signInModal}
+        onRequestClose={() => openSignInModal(false)}
+        overlayClassName="bg-white bg-opacity-50 fixed left-0 top-0 w-full h-full flex justify-center items-center"
+        className="add-item-modal p-10 bg-white"
       >
         <div className="w-full h-full flex flex-col gap-4 justify-center">
           <LabelInput label="Email" type="email" value={email} onChange={setEmail} errors={emailErrors} />
@@ -111,8 +118,9 @@ const Header = () => {
             }}>SignUp</Button>
           </div>
         </div>
-      </HyperModal>
-      <HyperModal
+      {/* </HyperModal> */}
+      </ReactModal>
+      {/* <HyperModal
         isOpen={signUpModal}
         requestClose={() => openSignUpModal(false)}
         classes={{
@@ -120,6 +128,12 @@ const Header = () => {
           portalWrapperClassName: "",
           contentClassName: "sign-modal p-10"
         }}
+      > */}
+      <ReactModal
+        isOpen={signInModal}
+        onRequestClose={() => openSignInModal(false)}
+        overlayClassName="bg-white bg-opacity-50 fixed left-0 top-0 w-full h-full flex justify-center items-center"
+        className="add-item-modal p-10 bg-white"
       >
         <div className="w-full h-full flex flex-col gap-4 justify-center">
           <LabelInput label="Name" type="text" value={name} onChange={setName} errors={nameErrors} />
@@ -135,7 +149,8 @@ const Header = () => {
             }}>SignIn</Button>
           </div>
         </div>
-      </HyperModal>
+      </ReactModal>
+      {/* </HyperModal> */}
     </>
   )
 }

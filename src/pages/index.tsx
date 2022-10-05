@@ -6,11 +6,12 @@ import Base from "../components/layouts/base";
 import { useSession } from "next-auth/react";
 import { Spinner1 } from "../components/atoms/spinners";
 import { Button } from "../components/atoms/buttons";
-import HyperModal from "react-hyper-modal";
+// import HyperModal from "react-hyper-modal";
 import { LabelInput } from "../components/atoms/inputs";
 import { addItemSchema, markItemSchema, markItemsSchema, removeItemSchema, removeItemsSchema, updateItemSchema } from "../server/common/validation/todoItem";
 import { TodoItemCard } from "../components/atoms/todo-item-cards";
 import { env } from "../env/client.mjs";
+import ReactModal from 'react-modal';
 
 const Index: NextPageWithLayout = () => {
   // const HyperModal = dynamic(
@@ -266,7 +267,7 @@ const Index: NextPageWithLayout = () => {
                   }
                 </div>
               </div>
-              <HyperModal
+              {/* <HyperModal
                 isOpen={addItemModal}
                 requestClose={() => openAddItemModal(false)}
                 classes={{
@@ -274,6 +275,12 @@ const Index: NextPageWithLayout = () => {
                   portalWrapperClassName: "",
                   contentClassName: "add-item-modal p-10"
                 }}
+              > */}
+              <ReactModal
+                isOpen={addItemModal}
+                onRequestClose={() => openAddItemModal(false)}
+                overlayClassName="bg-white bg-opacity-50 fixed left-0 top-0 w-full h-full flex justify-center items-center"
+                className="add-item-modal p-10 bg-white"
               >
                 <div className="w-full h-full flex flex-col justify-center gap-4">
                   { modalMode === "edit" && <div className="flex justify-start items-center">
@@ -288,7 +295,8 @@ const Index: NextPageWithLayout = () => {
                     <Button onClick={() => openAddItemModal(false)}>Cancel</Button>
                   </div>
                 </div>
-              </HyperModal>
+              {/* </HyperModal> */}
+              </ReactModal>
             </>
           )
         }
