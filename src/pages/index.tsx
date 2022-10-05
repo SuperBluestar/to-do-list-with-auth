@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { NextPageWithLayout } from "./_app";
 import Base from "../components/layouts/base";
 import { useSession } from "next-auth/react";
@@ -50,15 +50,18 @@ const Index: NextPageWithLayout = () => {
   const mutationUpdateItem = trpc.useMutation(["todo.update-item"]);
   const updateItem = async () => {
     if (modalMode !== "edit") return;
-    const valid = updateItemSchema.safeParse({ title: addingItemTitle, content: addingItemContent });
+    const valid = updateItemSchema.safeParse({ itemId: editingItemId, title: addingItemTitle, content: addingItemContent });
     if (valid.success) {
       try {
         setAddingItemTitleErrors([]);
         setAddingItemContentErrors([]);
-        const res = await mutationAddItem.mutateAsync({ title: addingItemTitle, content: addingItemContent });
+        const res = await mutationUpdateItem.mutateAsync({ itemId: editingItemId, title: addingItemTitle, content: addingItemContent });
         if (res) {
           refetchTodoItems();
           refetchTodoItemsCount();
+          setModalMode(undefined);
+          openAddItemModal(false);
+          setEditingItemId("");
           setAddingItemTitle("");
           setAddingItemContent("");
         }
@@ -154,6 +157,10 @@ const Index: NextPageWithLayout = () => {
       env.NEXT_PUBLIC_DEBUG && alert(err.message);
     }
   }
+  useEffect(() => {
+    refetchTodoItemsCount();
+    refetchTodoItems();
+  }, [status]);
   return (
     <>
       <Head>
@@ -269,7 +276,7 @@ const Index: NextPageWithLayout = () => {
                   <LabelInput label="Content" value={addingItemContent} onChange={setAddingItemContent} errors={addingItemContentErrors} type="textarea" />
                   <div className="flex justify-center items-center gap-8">
                     { modalMode === 'create' && <Button onClick={addItem}>Add Item</Button> }
-                    { modalMode === 'edit' && <Button onClick={updateItem}>Edit Item</Button> }
+                    { modalMode === 'edit' && <Button onClick={updateItem}>Update Item</Button> }
                     <Button onClick={() => openAddItemModal(false)}>Cancel</Button>
                   </div>
                 </div>

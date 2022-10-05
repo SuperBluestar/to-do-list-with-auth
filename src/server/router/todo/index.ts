@@ -108,7 +108,10 @@ export const todoRouter = createProtectedRouter()
         try {
           const updatedItem = await prisma.todoItem.update({
             where: { id: input.itemId },
-            data: input
+            data: {
+              title: input.title,
+              content: input.content,
+            },
           });
           return updatedItem;
         } catch (err: any) {
