@@ -26,7 +26,7 @@ export const LabelInput: FC<IInput> = ({
       <label className="w-24 grow-0 shrink-0 break-all py-2 px-3" htmlFor={id}>{label}</label>
       <div className="grow shrink flex flex-col gap-1">
         {
-          type === "textarea" && <textarea className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id={id} type={type} value={value} onChange={(e) => onChange(e.target.value)} />
+          type === "textarea" && <textarea className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id={id} value={value} onChange={(e) => onChange(e.target.value)} />
         }
         {
           type !== "textarea" && <input className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id={id} type={type} value={value} onChange={(e) => onChange(e.target.value)} />

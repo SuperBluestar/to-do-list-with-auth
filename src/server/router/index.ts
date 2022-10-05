@@ -37,7 +37,7 @@ export const appRouter = createRouter()
         });
       }
 
-      let hashPassword: string = "";
+      let hashPassword: string;
       try {
         hashPassword = await hash(password);
       } catch (err: any) {

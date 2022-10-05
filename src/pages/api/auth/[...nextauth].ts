@@ -26,8 +26,7 @@ export const authOptions: NextAuthOptions = {
         session.user = user;
       } else if (token) {
         session.user = {
-          //@ts-ignore
-          id: token.id,
+          id: token.id as string,
           email: token.email,
           name: token.name,
         }

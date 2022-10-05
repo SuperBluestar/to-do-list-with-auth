@@ -28,7 +28,7 @@ export const todoRouter = createProtectedRouter()
   .query('get-items', {
     input: getItemsSchema,
     resolve: async ({ input, ctx }) => {
-      let userId = ctx.session.user.id;
+      const userId = ctx.session.user.id;
       try {
         const todoItems = await prisma.todoItem.findMany({
           where: {
