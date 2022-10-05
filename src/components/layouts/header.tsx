@@ -130,8 +130,8 @@ const Header = () => {
         }}
       > */}
       <ReactModal
-        isOpen={signInModal}
-        onRequestClose={() => openSignInModal(false)}
+        isOpen={signUpModal}
+        onRequestClose={() => openSignUpModal(false)}
         overlayClassName="bg-white bg-opacity-50 fixed left-0 top-0 w-full h-full flex justify-center items-center"
         className="add-item-modal p-10 bg-white"
       >
