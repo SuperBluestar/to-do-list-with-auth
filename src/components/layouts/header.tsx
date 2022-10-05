@@ -9,6 +9,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 const Header = () => {
   const { data: session, status } = useSession();
+  console.log(session)
   const [signInModal, openSignInModal] = useState<boolean>(false);
   const [signUpModal, openSignUpModal] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
@@ -26,7 +27,7 @@ const Header = () => {
         setEmailErrors([]);
         setPasswordErrors([]);
         setNameErrors([]);
-        setServerError([]);
+        setServerError("");
         const createdUser = await mutationSignUp.mutateAsync({ name, email, password });
         if (createdUser) {
           openSignUpModal(false);
@@ -58,7 +59,7 @@ const Header = () => {
           {
             status === "authenticated" && (
               <>
-                <span className="font-bold">Logged as {session.user?.name?.toUpperCase()}</span>
+                <span className="font-bold" title={`${session.user?.id} ${session.user?.email} ${session.expires}`}>Logged as {session.user?.name?.toUpperCase()}</span>
                 <span className="cursor-pointer" onClick={() => signOut()}>SignOut</span>
               </>
             )

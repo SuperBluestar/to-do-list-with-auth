@@ -15,13 +15,22 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ token, user }) => {
       if (user?.id) {
         token.id = user.id;
+        token.email = user.email;
+        token.name = user.name;
       }
 
       return token;
     },
-    session({ session, user }) {
+    session({ session, user, token }) {
       if (user) {
         session.user = user;
+      } else if (token) {
+        session.user = {
+          //@ts-ignore
+          id: token.id,
+          email: token.email,
+          name: token.name,
+        }
       }
       return session;
     },
@@ -54,7 +63,7 @@ export const authOptions: NextAuthOptions = {
             id: existing.id,
             email: existing.email,
             name: existing.name,
-          };
+          } as User;
         } else {
           return null;
         }
