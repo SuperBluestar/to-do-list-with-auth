@@ -173,8 +173,8 @@ const Index: NextPageWithLayout = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {
-        loadingScreen ? <div className="w-full flex justify-center items-center z-50"><Spinner1 /></div> : (
-          <div className="flex items-center gap-4">
+        loadingScreen ? <div className="w-full h-full flex justify-center items-center z-50" style={{ minHeight: 'calc(100vh - 7rem)' }}><Spinner1 /></div> : (
+          <div className="w-full h-full flex items-start gap-4" style={{ minHeight: 'calc(100vh - 7rem)' }}>
             {
               status === "loading" && (
                 <div className="w-full h-full flex justify-center items-center">
@@ -264,29 +264,32 @@ const Index: NextPageWithLayout = () => {
                       }
                     </div>
                   </div>
-                  <HyperModal
-                    isOpen={addItemModal}
-                    requestClose={() => openAddItemModal(false)}
-                    classes={{
-                      wrapperClassName: "z-30",
-                      portalWrapperClassName: "",
-                      contentClassName: "add-item-modal p-10"
-                    }}
-                  >
-                    <div className="w-full h-full flex flex-col justify-center gap-4">
-                      { modalMode === "edit" && <div className="flex justify-start items-center">
-                        <span className="w-24">Id</span>
-                        <span>{editingItemId}</span>
-                      </div> }
-                      <LabelInput label="Title" value={addingItemTitle} onChange={setAddingItemTitle} errors={addingItemTitleErrors} type="text" />
-                      <LabelInput label="Content" value={addingItemContent} onChange={setAddingItemContent} errors={addingItemContentErrors} type="textarea" />
-                      <div className="flex justify-center items-center gap-8">
-                        { modalMode === 'create' && <Button onClick={addItem}>Add Item</Button> }
-                        { modalMode === 'edit' && <Button onClick={updateItem}>Update Item</Button> }
-                        <Button onClick={() => openAddItemModal(false)}>Cancel</Button>
+                  {
+                    !loadingScreen &&
+                    <HyperModal
+                      isOpen={addItemModal}
+                      requestClose={() => openAddItemModal(false)}
+                      classes={{
+                        wrapperClassName: "z-30",
+                        portalWrapperClassName: "",
+                        contentClassName: "add-item-modal p-10"
+                      }}
+                    >
+                      <div className="w-full h-full flex flex-col justify-center gap-4">
+                        { modalMode === "edit" && <div className="flex justify-start items-center">
+                          <span className="w-24">Id</span>
+                          <span>{editingItemId}</span>
+                        </div> }
+                        <LabelInput label="Title" value={addingItemTitle} onChange={setAddingItemTitle} errors={addingItemTitleErrors} type="text" />
+                        <LabelInput label="Content" value={addingItemContent} onChange={setAddingItemContent} errors={addingItemContentErrors} type="textarea" />
+                        <div className="flex justify-center items-center gap-8">
+                          { modalMode === 'create' && <Button onClick={addItem}>Add Item</Button> }
+                          { modalMode === 'edit' && <Button onClick={updateItem}>Update Item</Button> }
+                          <Button onClick={() => openAddItemModal(false)}>Cancel</Button>
+                        </div>
                       </div>
-                    </div>
-                  </HyperModal>
+                    </HyperModal>
+                  }
                 </>
               )
             }
