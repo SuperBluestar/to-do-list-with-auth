@@ -8,8 +8,9 @@ import type { AppType } from "next/app";
 import type { AppRouter } from "../server/router";
 import type { Session } from "next-auth";
 import "../styles/globals.css";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import type { NextPage } from "next";
+import { Spinner1 } from "../components/atoms/spinners";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -19,12 +20,22 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+  }, []);
+
   const getLayout = (Component as NextPageWithLayout).getLayout ?? ((page) => page)
   return (
     <SessionProvider session={session}>
-      {
+      {loading ? (
         getLayout(<Component {...pageProps} />)
-      }
+      ) : (
+        <div className="w-screen h-screen flex justify-center items-center">
+          <Spinner1 />
+        </div>
+      )}
     </SessionProvider>
   );
 };
