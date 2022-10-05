@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sign-modal {
+    width: 600px !important;
+    height: 400px !important;
+    box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.24) !important;
+    border-radius: 48px !important;
+}

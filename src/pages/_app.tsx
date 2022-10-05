@@ -8,14 +8,23 @@ import type { AppType } from "next/app";
 import type { AppRouter } from "../server/router";
 import type { Session } from "next-auth";
 import "../styles/globals.css";
+import { ReactElement, ReactNode } from "react";
+import type { NextPage } from "next";
+
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const getLayout = (Component as NextPageWithLayout).getLayout ?? ((page) => page)
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      {
+        getLayout(<Component {...pageProps} />)
+      }
     </SessionProvider>
   );
 };

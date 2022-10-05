@@ -1,5 +1,5 @@
 // @ts-check
-import { z } from "zod";
+import { string, z } from "zod";
 
 /**
  * Specify your server-side environment variables schema here.
@@ -10,8 +10,8 @@ export const serverSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   NEXTAUTH_SECRET: z.string(),
   NEXTAUTH_URL: z.string().url(),
-  DISCORD_CLIENT_ID: z.string(),
-  DISCORD_CLIENT_SECRET: z.string(),
+  // DISCORD_CLIENT_ID: z.string(),
+  // DISCORD_CLIENT_SECRET: z.string(),
 });
 
 /**
@@ -21,6 +21,7 @@ export const serverSchema = z.object({
  */
 export const clientSchema = z.object({
   // NEXT_PUBLIC_BAR: z.string(),
+  NEXT_PUBLIC_DEBUG: z.boolean(),
 });
 
 /**
@@ -31,4 +32,5 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
   // NEXT_PUBLIC_BAR: process.env.NEXT_PUBLIC_BAR,
+  NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG?.toLocaleLowerCase() === 'true'
 };
