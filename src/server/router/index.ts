@@ -8,10 +8,12 @@ import { User } from "@prisma/client";
 import { prisma } from "../db/client"
 import { TRPCError } from "@trpc/server";
 import { hash } from "argon2";
+import { todoRouter } from "./todo";
 
 export const appRouter = createRouter()
   .transformer(superjson)
   .merge("auth.", protectedExampleRouter)
+  .merge("todo.", todoRouter)
   .mutation("sign-up", {
     input: signUpSchema,
     resolve: async ({ input }) => {

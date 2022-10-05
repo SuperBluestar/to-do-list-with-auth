@@ -47,12 +47,12 @@ const Header = () => {
   return (
     <>
       <nav className="w-full h-28">
-        <div className="container mx-auto h-full px-4 md:px-20 flex justify-center gap-8 items-center border-b border-white border-opacity-5">
+        <div className="container mx-auto h-full px-4 md:px-20 flex justify-end gap-8 items-center border-b border-white border-opacity-5">
           {
             status === "unauthenticated" && (
               <>
-                <span className="cursor-pointer" onClick={() => openSignInModal(_prev => !_prev)}>SignIn</span>
-                <span className="cursor-pointer" onClick={() => openSignUpModal(_prev => !_prev)}>SignUp</span>
+                <span id="sign-in-btn" className="cursor-pointer" onClick={() => openSignInModal(_prev => !_prev)}>SignIn</span>
+                <span id="sign-up-btn" className="cursor-pointer" onClick={() => openSignUpModal(_prev => !_prev)}>SignUp</span>
               </>
             )
           }
