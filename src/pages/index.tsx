@@ -6,18 +6,17 @@ import Base from "../components/layouts/base";
 import { useSession } from "next-auth/react";
 import { Spinner1 } from "../components/atoms/spinners";
 import { Button } from "../components/atoms/buttons";
-// import HyperModal from "react-hyper-modal";
+import HyperModal from "react-hyper-modal";
 import { LabelInput } from "../components/atoms/inputs";
 import { addItemSchema, markItemSchema, markItemsSchema, removeItemSchema, removeItemsSchema, updateItemSchema } from "../server/common/validation/todoItem";
 import { TodoItemCard } from "../components/atoms/todo-item-cards";
 import { env } from "../env/client.mjs";
-import dynamic from "next/dynamic";
 
 const Index: NextPageWithLayout = () => {
-  const HyperModal = dynamic(
-    (() => import('react-hyper-modal')),
-    { ssr: false }
-  );
+  // const HyperModal = dynamic(
+  //   (() => import('react-hyper-modal')),
+  //   { ssr: false }
+  // );
   const { data: session, status } = useSession();
   // const [loadingScreen, setLoadingScreen] = useState<boolean>(true);
   // useEffect(() => {
