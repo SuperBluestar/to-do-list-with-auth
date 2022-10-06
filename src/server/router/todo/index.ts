@@ -313,3 +313,5 @@ export const todoRouter = createProtectedRouter()
       }
     }
   });
+
+export type TodoRouter = typeof todoRouter;

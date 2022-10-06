@@ -12,6 +12,8 @@ import { addItemSchema, markItemSchema, markItemsSchema, removeItemSchema, remov
 import { TodoItemCard } from "../components/atoms/todo-item-cards";
 import { env } from "../env/client.mjs";
 import ReactModal from 'react-modal';
+import { TRPCClientError } from "@trpc/client";
+import { TodoRouter } from "../server/router/todo";
 
 const Index: NextPageWithLayout = () => {
   // const HyperModal = dynamic(
@@ -38,19 +40,18 @@ const Index: NextPageWithLayout = () => {
     if (modalMode !== "create") return;
     const valid = addItemSchema.safeParse({ title: addingItemTitle, content: addingItemContent });
     if (valid.success) {
-      try {
-        setAddingItemTitleErrors([]);
-        setAddingItemContentErrors([]);
-        const res = await mutationAddItem.mutateAsync({ title: addingItemTitle, content: addingItemContent });
+      setAddingItemTitleErrors([]);
+      setAddingItemContentErrors([]);
+      mutationAddItem.mutateAsync({ title: addingItemTitle, content: addingItemContent }).then((res) => {
         if (res) {
           refetchTodoItems();
           refetchTodoItemsCount();
           setAddingItemTitle("");
           setAddingItemContent("");
         }
-      } catch (err: any) {
-        env.NEXT_PUBLIC_DEBUG && alert(err.message);
-      }
+      }).catch((err: TRPCClientError<TodoRouter>) => {
+        alert(err.message);
+      });
     } else {
       setAddingItemTitleErrors(valid.error.flatten().fieldErrors.title || []);
       setAddingItemContentErrors(valid.error.flatten().fieldErrors.content || []);
@@ -61,10 +62,9 @@ const Index: NextPageWithLayout = () => {
     if (modalMode !== "edit") return;
     const valid = updateItemSchema.safeParse({ itemId: editingItemId, title: addingItemTitle, content: addingItemContent });
     if (valid.success) {
-      try {
-        setAddingItemTitleErrors([]);
-        setAddingItemContentErrors([]);
-        const res = await mutationUpdateItem.mutateAsync({ itemId: editingItemId, title: addingItemTitle, content: addingItemContent });
+      setAddingItemTitleErrors([]);
+      setAddingItemContentErrors([]);
+      mutationUpdateItem.mutateAsync({ itemId: editingItemId, title: addingItemTitle, content: addingItemContent }).then((res) => {
         if (res) {
           refetchTodoItems();
           refetchTodoItemsCount();
@@ -74,9 +74,9 @@ const Index: NextPageWithLayout = () => {
           setAddingItemTitle("");
           setAddingItemContent("");
         }
-      } catch (err: any) {
-        env.NEXT_PUBLIC_DEBUG && alert(err.message);
-      }
+      }).catch((err: TRPCClientError<TodoRouter>) => {
+        alert(err.message);
+      });
     } else {
       setAddingItemTitleErrors(valid.error.flatten().fieldErrors.title || []);
       setAddingItemContentErrors(valid.error.flatten().fieldErrors.content || []);
@@ -86,11 +86,14 @@ const Index: NextPageWithLayout = () => {
   const markOrUnmarkItem = async (itemId: string, markStatus: boolean) => {
     const valid = markItemSchema.safeParse({ itemId, markStatus });
     if (valid.success) {
-      const res = await mutationMarkItem.mutateAsync({ itemId, markStatus });
-      if (res) {
-        refetchTodoItems();
-        refetchTodoItemsCount();
-      }
+      mutationMarkItem.mutateAsync({ itemId, markStatus }).then((res) => {
+        if (res) {
+          refetchTodoItems();
+          refetchTodoItemsCount();
+        }
+      }).catch((err: TRPCClientError<TodoRouter>) => {
+        alert(err.message);
+      });
     } else {
       env.NEXT_PUBLIC_DEBUG && alert(valid.error.flatten().fieldErrors.itemId);
     }
@@ -100,12 +103,15 @@ const Index: NextPageWithLayout = () => {
     const selectedIds = Object.keys(selectedItems).filter((key) => selectedItems[key]);
     const valid = markItemsSchema.safeParse({ itemIds: selectedIds, markStatus: true });
     if (valid.success) {
-      const res = await mutationMarkItems.mutateAsync({ itemIds: selectedIds, markStatus: true });
-      if (res) {
-        refetchTodoItems();
-        refetchTodoItemsCount();
-        setSelectedItems({});
-      }
+      mutationMarkItems.mutateAsync({ itemIds: selectedIds, markStatus: true }).then((res) => {
+        if (res) {
+          refetchTodoItems();
+          refetchTodoItemsCount();
+          setSelectedItems({});
+        }
+      }).catch((err: TRPCClientError<TodoRouter>) => {
+        alert(err.message);
+      });
     } else {
       env.NEXT_PUBLIC_DEBUG && alert(valid.error.flatten().fieldErrors.itemIds);
     }
@@ -114,12 +120,15 @@ const Index: NextPageWithLayout = () => {
     const selectedIds = Object.keys(selectedItems).filter((key) => selectedItems[key]);
     const valid = markItemsSchema.safeParse({ itemIds: selectedIds, markStatus: false });
     if (valid.success) {
-      const res = await mutationMarkItems.mutateAsync({ itemIds: selectedIds, markStatus: false });
-      if (res) {
-        refetchTodoItems();
-        refetchTodoItemsCount();
-        setSelectedItems({});
-      }
+      mutationMarkItems.mutateAsync({ itemIds: selectedIds, markStatus: false }).then((res) => {
+        if (res) {
+          refetchTodoItems();
+          refetchTodoItemsCount();
+          setSelectedItems({});
+        }
+      }).catch((err: TRPCClientError<TodoRouter>) => {
+        alert(err.message);
+      });
     } else {
       env.NEXT_PUBLIC_DEBUG && alert(valid.error.flatten().fieldErrors.itemIds);
     }
@@ -128,11 +137,14 @@ const Index: NextPageWithLayout = () => {
   const removeItem = async (itemId: string) => {
     const valid = removeItemSchema.safeParse({ itemId });
     if (valid.success) {
-      const res = await mutationRemoveItem.mutateAsync({ itemId });
-      if (res) {
-        refetchTodoItems();
-        refetchTodoItemsCount();
-      }
+      mutationRemoveItem.mutateAsync({ itemId }).then((res) => {
+        if (res) {
+          refetchTodoItems();
+          refetchTodoItemsCount();
+        }
+      }).catch((err: TRPCClientError<TodoRouter>) => {
+        alert(err.message);
+      });
     } else {
       env.NEXT_PUBLIC_DEBUG && alert(valid.error.flatten().fieldErrors.itemId);
     }
@@ -143,28 +155,30 @@ const Index: NextPageWithLayout = () => {
     const selectedIds = Object.keys(selectedItems).filter((key) => selectedItems[key]);
     const valid = removeItemsSchema.safeParse({ itemIds: selectedIds });
     if (valid.success) {
-      const res = await mutationRemoveItems.mutateAsync({ itemIds: selectedIds });
-      if (res) {
-        refetchTodoItems();
-        refetchTodoItemsCount();
-        setSelectedItems({});
-      }
+      mutationRemoveItems.mutateAsync({ itemIds: selectedIds }).then((res) => {
+        if (res) {
+          refetchTodoItems();
+          refetchTodoItemsCount();
+          setSelectedItems({});
+        }
+      }).catch((err: TRPCClientError<TodoRouter>) => {
+        alert(err.message);
+      });
     } else {
       env.NEXT_PUBLIC_DEBUG && alert(valid.error.flatten().fieldErrors.itemIds);
     }
   }
   const mutationRemoveCompleteItems = trpc.useMutation(["todo.remove-complete-items"]);
   const removeCompletedItems = async () => {
-    try {
-      const res = await mutationRemoveCompleteItems.mutateAsync()
+    mutationRemoveCompleteItems.mutateAsync().then((res) => {
       if (res) {
         refetchTodoItems();
         refetchTodoItemsCount();
         setSelectedItems({});
       }
-    } catch (err: any) {
-      env.NEXT_PUBLIC_DEBUG && alert(err.message);
-    }
+    }).catch((err: TRPCClientError<TodoRouter>) => {
+      alert(err.message);
+    });
   }
   useEffect(() => {
     refetchTodoItemsCount();
