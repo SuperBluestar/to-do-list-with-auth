@@ -99,8 +99,10 @@ const Header = () => {
                     switch (res?.status) {
                       case 401:
                         setServerError("Failed to authorize.");
+                        break;
                       case 403:
                         setServerError("Forbidden.");
+                        break;
                       default:
                         setServerError(`Unknown error: ${res?.error}`)
                     }
