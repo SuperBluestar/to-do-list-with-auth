@@ -144,7 +144,7 @@ const Header = () => {
           { serverError && <span className="ml-24 text-red-500 text-xs">{serverError}</span> }
           <div className="flex justify-center items-center gap-8">
             <Button onClick={signUp}>SignUp</Button>
-            <Button onClick={() => openSignInModal(false)}>Cancel</Button>
+            <Button onClick={() => openSignUpModal(false)}>Cancel</Button>
             <Button onClick={() => {
               openSignUpModal(false);
               openSignInModal(true);
